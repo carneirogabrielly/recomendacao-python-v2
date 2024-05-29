@@ -22,7 +22,7 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 DB_DATABASE = os.getenv("DB_DATABASE")
-HOST_INSTITUICAO = os.getenv("HOST_INSTITUICAO")
+HOST_GATEWAY = os.getenv("HOST_GATEWAY")
 
 # ----------------- Database ----------------- #
 
@@ -90,7 +90,7 @@ def save_recomendacoes(results, aluno_id, session: Session):
     for result in results:
         # Ensure you pass a session instance here
         # oportunidade = read_oportunidades_nome(session=session, nome=result["nome"])
-        url = f"{HOST_INSTITUICAO}/instituicao"
+        url = f"{HOST_GATEWAY}/instituicao"
         oportunidade = None
         response = requests.get(url, params={"nome": result["nome"]})
         if response.status_code == 200:
@@ -109,7 +109,7 @@ def save_recomendacoes(results, aluno_id, session: Session):
 @app.post('/search')
 async def search(input: AlunoId, session: Session = Depends(get_session)):
     id = input.id_aluno
-    url = f'{HOST_INSTITUICAO}/aluno/{id}'
+    url = f'{HOST_GATEWAY}/aluno/{id}'
     response = requests.get(url)
     if response.status_code == 404:
         return {"error": "Aluno não encontrado"}
